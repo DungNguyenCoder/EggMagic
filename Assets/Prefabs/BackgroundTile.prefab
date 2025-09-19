@@ -46,9 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7190b8077b635c64389fab5daa579a57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  green1Tile: {fileID: 2497872569787409023}
-  green2Tile: {fileID: 1264360070076174383}
-  eggPrefab: {fileID: -4872700834535551878, guid: bd72e86d8f1dc0545a2911118d24da0a, type: 3}
+  _green1Tile: {fileID: 2497872569787409023}
+  _green2Tile: {fileID: 1264360070076174383}
+  _currentEgg: {fileID: -4872700834535551878, guid: bd72e86d8f1dc0545a2911118d24da0a, type: 3}
+  _board: {fileID: 0}
 --- !u!1 &1264360070076174383
 GameObject:
   m_ObjectHideFlags: 0

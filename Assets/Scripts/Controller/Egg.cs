@@ -8,9 +8,9 @@ public class Egg : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _eggSprite;
     private EggData _data;
-    private BackgroundTile _panel;
+    private Tiles _panel;
 
-    public void Setup(EggData data, BackgroundTile panel)
+    public void Setup(EggData data, Tiles panel)
     {
         _data = data;
         _panel = panel;
