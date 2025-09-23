@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,8 +12,6 @@ public class Board : Singleton<Board>
     [SerializeField] private Tiles _tilePrefab;
     private Tiles[,] _eggTiles;
     private int[,] _eggTilesID;
-    private bool[,] _visited;
-    private Tiles _currentEggInChoose;
     private List<(int, int)> _eggSameID;
     private bool _isGreen1;
     [SerializeField] private EggPool _eggPool;
@@ -45,9 +44,10 @@ public class Board : Singleton<Board>
             }
         }
     }
-    public List<(int, int)> LoangBFS(int sx, int sy, int id)
+    public List<(int, int)> LoangBFS(int sx, int sy)
     {
         List<(int, int)> result = new List<(int, int)>();
+        bool[,] _visited;
 
         int[] dx = { 0, -1, 0, 1 };
         int[] dy = { -1, 0, 1, 0 };
@@ -88,21 +88,21 @@ public class Board : Singleton<Board>
         {
             if (_eggSameID != null && _eggSameID.Count > 0)
             {
-                foreach (var (rr, cc) in _eggSameID)
+                foreach (var (row, col) in _eggSameID)
                 {
-                    _eggTiles[rr, cc].PopDown();
+                    _eggTiles[row, col].PopDown();
                 }
                 _eggSameID.Clear();
             }
-            for (int r = 0; r < _height; r++)
+            for (int row = 0; row < _height; row++)
             {
-                for (int c = 0; c < _width; c++)
+                for (int col = 0; col < _width; col++)
                 {
-                    if (_eggTiles[r, c] == tile)
+                    if (_eggTiles[row, col] == tile && _eggTilesID[row, col] != -1)
                     {
-                        List<(int, int)> list = LoangBFS(r, c, _eggTilesID[r, c]);
+                        List<(int, int)> sameEgg = LoangBFS(row, col);
                         // Debug.Log($"({r},{c}), egg count = {list.Count}");
-                        foreach (var (rr, cc) in list)
+                        foreach (var (rr, cc) in sameEgg)
                         {
                             if (!_eggTiles[rr, cc].GetIsHighlighted())
                                 _eggTiles[rr, cc].Popup();
@@ -110,7 +110,7 @@ public class Board : Singleton<Board>
                                 _eggTiles[rr, cc].PopDown();
                             // Debug.Log($"({rr}, {cc})");
                         }
-                        _eggSameID = list;
+                        _eggSameID = sameEgg;
                         return;
                     }
                 }
@@ -130,38 +130,68 @@ public class Board : Singleton<Board>
                     else
                     {
                         _eggTiles[i, j].SetNewLvlEgg();
-                        _eggTilesID[i, j]++;
+                        _eggTilesID[i, j] = (_eggTilesID[i, j] + 1) % 3;
                     }
                     _eggTiles[i, j].PopDown();
                 }
                 _eggSameID.Clear();
+
+                CollapseAndRefill();
             }
             else
             {
-                tile.PopDown(); 
+                tile.PopDown();
             }
         }
     }
-    public Tiles GetTile(int x, int y)
+    private void CollapseAndRefill()
     {
-        return _eggTiles[x, y];
-    }
+        for (int col = 0; col < _width; col++)
+        {
+            int writeRow = _height - 1;
+            for (int row = _height - 1; row >= 0; row--)
+            {
+                if (_eggTilesID[row, col] != -1)
+                {
+                    if (row != writeRow)
+                    {
+                        Egg oldEgg = _eggTiles[row, col].GetEggInstance();
+                        if (oldEgg != null)
+                        {
+                            oldEgg.transform.SetParent(_eggTiles[writeRow, col].transform, true);
+                            oldEgg.MoveTo(_eggTiles[writeRow, col].transform.position, 0.25f);
+                        }
 
-    public int GetEggID(int x, int y)
-    {
-        return _eggTilesID[x, y];
-    }
+                        _eggTilesID[writeRow, col] = _eggTilesID[row, col];
+                        _eggTiles[writeRow, col].SetEggInstance(oldEgg, _eggTilesID[writeRow, col]);
 
-    public void SetCurrentEggInChoose(Tiles egg)
-    {
-        this._currentEggInChoose = egg;
-    }
+                        _eggTilesID[row, col] = -1;
+                        _eggTiles[row, col].ClearOnly();
+                    }
+                    writeRow--;
+                }
+            }
+            for (int r = writeRow; r >= 0; r--)
+            {
+                int newIdx = UnityEngine.Random.Range(0, 3);
+                _eggTiles[r, col].SpawnEgg(newIdx);
+                _eggTilesID[r, col] = _eggTiles[r, col].GetCurrentEggID();
 
+                Egg newEgg = _eggTiles[r, col].GetEggInstance();
+                if (newEgg != null)
+                {
+                    Vector3 startPos = _eggTiles[r, col].transform.position + Vector3.up * 3f;
+                    newEgg.transform.position = startPos;
+                    float delay = 0.05f * (_height - r);
+                    newEgg.MoveTo(_eggTiles[r, col].transform.position, 0.25f + delay);
+                }
+            }
+        }
+    }
     public bool GetIsGreen1()
     {
         return _isGreen1;
     }
-
     private void TestBoard()
     {
         for (int row = 0; row < _height; row++)

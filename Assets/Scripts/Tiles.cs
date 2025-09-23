@@ -12,7 +12,6 @@ public class Tiles : MonoBehaviour
     private EggData[] eggDatas;
     private Animator _animator;
     private bool _isHighlighted = false;
-    private int _currentEggIndex;
     private void Awake()
     {
         _green1Tile.SetActive(false);
@@ -29,33 +28,30 @@ public class Tiles : MonoBehaviour
     private void Initialize()
     {
         eggDatas = Resources.LoadAll<EggData>(GameConfig.EGG_DATA_PATH);
-        _currentEggIndex = Random.Range(0, eggDatas.Length);
-        SpawnEgg(_currentEggIndex);
+        System.Array.Sort(eggDatas, (a, b) => a.eggID.CompareTo(b.eggID));
+        int _newEggID = Random.Range(0, eggDatas.Length);
+        SpawnEgg(_newEggID);
         SetTile(Board.Instance.GetIsGreen1());
     }
-    public void SpawnEgg(int idx)
+    public void SpawnEgg(int ID)
     {
-        _currentEggID = eggDatas[idx].eggID;
+        if (_currentEgg != null)
+        {
+            Board.Instance.EggPool.ReturnEgg(_currentEgg);
+            _currentEgg = null;
+        }
         Egg egg = Board.Instance.EggPool.GetEgg();
         egg.transform.SetParent(this.transform);
         egg.transform.localPosition = Vector3.zero;
         // Egg egg = Instantiate(_eggPrefabs, this.transform);
-        egg.Setup(eggDatas[idx], this);
-        if (_currentEgg != null)
-        {
-            Board.Instance.EggPool.ReturnEgg(egg);
-        }
+        egg.Setup(eggDatas[ID], this);
+        _currentEggID = ID;
         _currentEgg = egg;
     }
     public void SetNewLvlEgg()
     {
-        _currentEggIndex++;
-        if (_currentEggIndex >= eggDatas.Length)
-        {
-            _currentEggIndex = 0;
-        }
-        RemoveEgg();
-        SpawnEgg(_currentEggIndex);
+        _currentEggID = (_currentEggID + 1) % 3;
+        SpawnEgg(_currentEggID);
     }
     public void SetTile(bool isGreen1)
     {
@@ -115,5 +111,22 @@ public class Tiles : MonoBehaviour
             Board.Instance.EggPool.ReturnEgg(_currentEgg);
             _currentEgg = null;
         }
+    }
+
+    public Egg GetEggInstance()
+    {
+        return _currentEgg;
+    }
+
+    public void SetEggInstance(Egg egg, int eggId)
+    {
+        _currentEgg = egg;
+        _currentEggID = eggId;
+    }
+
+    public void ClearOnly()
+    {
+        _currentEgg = null;
+        _currentEggID = -1;
     }
 }

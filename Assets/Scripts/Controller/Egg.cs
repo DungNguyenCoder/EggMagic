@@ -36,6 +36,26 @@ public class Egg : MonoBehaviour
         }
     }
 
+    public void MoveTo(Vector3 targetPos, float duration = 0.25f)
+    {
+        StartCoroutine(MoveCoroutine(targetPos, duration));
+    }
+
+    private IEnumerator MoveCoroutine(Vector3 targetPos, float duration)
+    {
+        Vector3 start = transform.position;
+        int steps = 30;
+        float stepTime = duration / steps;
+        for (int i = 1; i <= steps; i++)
+        {
+            float t = (float)i / steps;
+            transform.position = Vector3.Lerp(start, targetPos, t);
+            yield return new WaitForSeconds(stepTime);
+        }
+
+        transform.position = targetPos;
+    }
+
     public void Setup(EggData data, Tiles tile)
     {
         _data = data;

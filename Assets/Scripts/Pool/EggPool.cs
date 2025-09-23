@@ -11,7 +11,8 @@ public class EggPool : MonoBehaviour
     {
         for (int i = 0; i < _amount; i++)
         {
-            Egg egg = Instantiate(_eggPrefab);
+            Egg egg = Instantiate(_eggPrefab, this.transform);
+            egg.gameObject.name = "Egg no: " + (i + 1);
             egg.gameObject.SetActive(false);
             _eggPool.Add(egg);
         }
@@ -27,7 +28,7 @@ public class EggPool : MonoBehaviour
                 return egg;
             }
         }
-        Egg newEgg = Instantiate(_eggPrefab);
+        Egg newEgg = Instantiate(_eggPrefab, this.transform);
         _eggPool.Add(newEgg);
         return newEgg;
     }
