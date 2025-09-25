@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class EggPool : MonoBehaviour
 {
     [SerializeField] private Egg _eggPrefab;
-    [SerializeField] private int _amount = 20;
+    [SerializeField] private int _amount = 50;
     private List<Egg> _eggPool = new List<Egg>();
 
     private void Awake()
