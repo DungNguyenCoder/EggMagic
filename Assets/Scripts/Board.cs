@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -118,30 +119,7 @@ public class Board : Singleton<Board>
         }
         else
         {
-            if (_eggSameID.Count >= 2)
-            {
-                foreach (var (i, j) in _eggSameID)
-                {
-                    if (_eggTiles[i, j] != tile)
-                    {
-                        _eggTiles[i, j].RemoveEgg();
-                        _eggTilesID[i, j] = -1;
-                    }
-                    else
-                    {
-                        _eggTiles[i, j].SetNewLvlEgg();
-                        _eggTilesID[i, j] = (_eggTilesID[i, j] + 1) % 3;
-                    }
-                    _eggTiles[i, j].PopDown();
-                }
-                _eggSameID.Clear();
-
-                CollapseAndRefill();
-            }
-            else
-            {
-                tile.PopDown();
-            }
+            SetEggDisappear(tile);
         }
     }
     private void CollapseAndRefill()
@@ -187,6 +165,34 @@ public class Board : Singleton<Board>
                 }
             }
         }
+    }
+    private void SetEggDisappear(Tiles tile)
+    {
+        if (_eggSameID.Count >= 2)
+            {
+                foreach (var (i, j) in _eggSameID)
+                {
+                    if (_eggTiles[i, j] != tile)
+                    {
+                        
+                        _eggTiles[i, j].RemoveEgg();
+                        _eggTilesID[i, j] = -1;
+                    }
+                    else
+                    {
+                        _eggTiles[i, j].SetNewLvlEgg();
+                        _eggTilesID[i, j] = (_eggTilesID[i, j] + 1) % 3;
+                    }
+                    _eggTiles[i, j].PopDown();
+                }
+                _eggSameID.Clear();
+
+                CollapseAndRefill();
+            }
+            else
+            {
+                tile.PopDown();
+            }
     }
     public bool GetIsGreen1()
     {
