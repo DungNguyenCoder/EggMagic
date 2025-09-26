@@ -98,6 +98,7 @@ public class Board : Singleton<Board>
         if (_eggSameID.Count >= 2)
         {
             AudioManager.Instance.PlaySFX(AudioManager.Instance.addScore);
+            EventManager.onUpdatePoint?.Invoke(_eggSameID.Count);
             _isProcessing = true;
             var cluster = BFS.LoangBFS(tile.GetTileRow(), tile.GetTileCol(), _height, _width, _eggTilesID);
             StartCoroutine(MergeRelayByDistance(cluster, tile));
@@ -116,9 +117,9 @@ public class Board : Singleton<Board>
     {
         var distMap = new Dictionary<(int,int), int>();
         int maxDist = 0;
-        foreach (var (r,c,d) in cluster)
+        foreach (var (r, c, d) in cluster)
         {
-            distMap[(r,c)] = d;
+            distMap[(r, c)] = d;
             if (d > maxDist) maxDist = d;
         }
 
@@ -160,7 +161,6 @@ public class Board : Singleton<Board>
                     _eggTilesID[tr, tc] = (_eggTilesID[tr, tc] + 1) % GameConfig.TOTAL_EGG_NUMBER;
 
                     BestEggLvl();
-                    EventManager.onUpdatePoint?.Invoke(cluster.Count);
 
                     foreach (var (rr, cc, _) in cluster) _eggTiles[rr, cc].PopDown();
                     _eggSameID.Clear();
@@ -178,7 +178,6 @@ public class Board : Singleton<Board>
             _eggTilesID[tr, tc] = (_eggTilesID[tr, tc] + 1) % GameConfig.TOTAL_EGG_NUMBER;
 
             BestEggLvl();
-            EventManager.onUpdatePoint?.Invoke(cluster.Count);
 
             foreach (var (rr, cc, _) in cluster) _eggTiles[rr, cc].PopDown();
             _eggSameID.Clear();

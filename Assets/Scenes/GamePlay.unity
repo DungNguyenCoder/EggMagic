@@ -942,7 +942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eggPrefab: {fileID: -4872700834535551878, guid: bd72e86d8f1dc0545a2911118d24da0a, type: 3}
-  _amount: 20
+  _amount: 50
 --- !u!1 &577799791
 GameObject:
   m_ObjectHideFlags: 0

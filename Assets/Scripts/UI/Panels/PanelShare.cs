@@ -6,7 +6,9 @@ public class PanelShare : Panel
 {
     public void OnClickYesButton()
     {
-        UIManager.Instance.Share();
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
+        PanelManager.Instance.ClosePanel(GameConfig.PANEL_SHARE);
+        Time.timeScale = 1f;
     }
     public void OnClickNoButton()
     {

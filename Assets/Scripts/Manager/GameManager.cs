@@ -24,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     private void AddScore(int point)
     {
         _score += point;
+        Debug.Log("" + _score);
         if (_score > _highScore)
         {
             _highScore = _score;

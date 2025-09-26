@@ -4,8 +4,6 @@ public class GameConfig
 {
     public static int TOTAL_EGG_NUMBER = 0;
     public static int EGG_SPAWN_LEVEL = 3;
-    public static string MUSIC_STATUS;
-    public static string SFX_STATUS;
     public static string PANEL_RESTART = "Panel - Restart";
     public static string PANEL_HOME = "Panel - Home";
     public static string PANEL_PAUSE = "Panel - Pause";

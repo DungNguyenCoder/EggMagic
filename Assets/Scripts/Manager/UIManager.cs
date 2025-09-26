@@ -20,36 +20,4 @@ public class UIManager : Singleton<UIManager>
         PanelManager.Instance.ClosePanel(panelName);
         Time.timeScale = 1f;
     }
-    public void Home()
-    {
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
-        PanelManager.Instance.ClosePanel(GameConfig.PANEL_HOME);
-        SceneManager.LoadScene("MainMenu");
-    }
-    public void Restart()
-    {
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
-        PanelManager.Instance.ClosePanel(GameConfig.PANEL_RESTART);
-        Time.timeScale = 1f;
-        GameManager.Instance.SetScore(0);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void Pause()
-    {
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
-        PanelManager.Instance.ClosePanel(GameConfig.PANEL_PAUSE);
-        Time.timeScale = 1f;
-    }
-    public void Share()
-    {
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
-        PanelManager.Instance.ClosePanel(GameConfig.PANEL_SHARE);
-        Time.timeScale = 1f;
-    }
-    public void HowTo()
-    {
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
-        PanelManager.Instance.ClosePanel(GameConfig.PANEL_HOW_TO);
-        Time.timeScale = 1f;
-    }
 }

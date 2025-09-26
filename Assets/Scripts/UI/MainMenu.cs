@@ -4,7 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PanelMainMenu : Panel
+public class MainMenu : Panel
 {
     [SerializeField] private GameObject gameTitle;
     [SerializeField] private GameObject playButton;
@@ -21,11 +21,13 @@ public class PanelMainMenu : Panel
     }
     public void OnClickRankings()
     {
-
+        
     }
     public void OnClickShare()
     {
-
+        PanelManager.Instance.OpenPanel(GameConfig.PANEL_SHARE);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
+        Time.timeScale = 0f;
     }
     public void OnClickSetting()
     {
@@ -39,6 +41,8 @@ public class PanelMainMenu : Panel
     }
     public void OnClickHowTo()
     {
-        
+        PanelManager.Instance.OpenPanel(GameConfig.PANEL_HOW_TO);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
+        Time.timeScale = 0f;
     }
 }
