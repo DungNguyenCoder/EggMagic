@@ -14,9 +14,17 @@ public class InGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI eggLevelText;
     [SerializeField] private Image currentEggImage;
     [SerializeField] private Image nextEggImage;
+    [SerializeField] private Image FillBar;
     private void Start()
     {
+        Time.timeScale = 1f;
+        GameManager.Instance.SetTime(10f);
         highScoreText.text = "" + PlayerPrefs.GetInt(GameConfig.HIGH_SCORE_KEY, 0);
+        FillBar.fillAmount = 1f;
+    }
+    private void Update()
+    {
+        FillBar.fillAmount = GameManager.Instance.GetTime() / 10f;
     }
 
     private void OnEnable()
@@ -68,7 +76,7 @@ public class InGame : MonoBehaviour
     }
     public void OnClickShare()
     {
-        PanelManager.Instance.OpenPanel(GameConfig.PANEL_SHARE);
+        PanelManager.Instance.OpenPanel(GameConfig.PANEL_INFOMATION);
         AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
         Time.timeScale = 0f;
     }

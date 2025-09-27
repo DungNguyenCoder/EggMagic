@@ -9,9 +9,9 @@ public class PanelRestart : Panel
     {
         AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
         PanelManager.Instance.ClosePanel(GameConfig.PANEL_RESTART);
-        Time.timeScale = 1f;
         GameManager.Instance.SetScore(0);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("GamePlay");
+        Time.timeScale = 1f;
     }
     public void OnClickNoButton()
     {

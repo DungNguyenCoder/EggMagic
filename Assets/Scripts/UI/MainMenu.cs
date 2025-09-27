@@ -13,6 +13,12 @@ public class MainMenu : Panel
         gameTitle.transform.DOScale(0.9f, 1f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
         playButton.transform.DOScale(0.9f, 1f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
     }
+    private void OnDisable()
+    {
+        Debug.Log("Destroy DOTween mainmenu");
+        DOTween.Kill(gameTitle.transform);
+        DOTween.Kill(playButton.transform);
+    }
     public void OnClickPlayButton()
     {
         AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
@@ -25,7 +31,7 @@ public class MainMenu : Panel
     }
     public void OnClickShare()
     {
-        PanelManager.Instance.OpenPanel(GameConfig.PANEL_SHARE);
+        PanelManager.Instance.OpenPanel(GameConfig.PANEL_INFOMATION);
         AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
         Time.timeScale = 0f;
     }
