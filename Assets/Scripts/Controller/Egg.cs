@@ -15,6 +15,7 @@ public class Egg : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _eggSprite.sortingOrder = 30;
     }
 
     private void Start()

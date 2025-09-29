@@ -139,6 +139,14 @@ public class Tiles : MonoBehaviour
     {
         _row = row;
         _col = col;
+        if (_green1Tile.activeSelf)
+        {
+            _green1Tile.GetComponent<SpriteRenderer>().sortingOrder = (row + 1) * (col + 1);
+        }
+        if (_green2Tile.activeSelf)
+        {
+            _green2Tile.GetComponent<SpriteRenderer>().sortingOrder = (row + 1) * (col + 1);
+        }
     }
     public EggData GetEggData(int idx)
     {

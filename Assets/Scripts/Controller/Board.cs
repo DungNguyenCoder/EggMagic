@@ -26,17 +26,13 @@ public class Board : Singleton<Board>
     }
     private void SetUp()
     {
-        SpriteRenderer sr = _tilePrefab.GetComponentInChildren<SpriteRenderer>();
-        Sprite sprite = sr.sprite;
-        float worldWidth = sprite.rect.width / sprite.pixelsPerUnit;
-        float worldHeight = sprite.rect.height / sprite.pixelsPerUnit;
         for (int row = 0; row < _height; row++)
         {
             for (int col = 0; col < _width; col++)
             {
-                float x = (col - (_width - 1) / 2f) * worldWidth;
-                float y = ((_height - 1 - row) - (_height - 1) / 2f) * worldHeight;
-                _isGreen1 = ((row + col) % 2 == 0);
+                float x = (col - (_width - 1) / 2f) * (float)0.823;
+                float y = (_height - 1 - row - (_height - 1) / 2f) * (float)0.79;
+                _isGreen1 = (row + col) % 2 == 0;
                 Tiles tile = Instantiate(_tilePrefab, new Vector2(x, y) + (Vector2)transform.position, Quaternion.identity, this.transform);
                 tile.name = "(  " + row + "   " + col + "   )";
                 tile.SetTilePosition(row, col);
