@@ -7,6 +7,7 @@ public class PanelHome : Panel
 {
     public void OnClickYesButton()
     {
+        Time.timeScale = 1f;
         AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
         AudioManager.Instance.PlayMusicFromStart();
         PanelManager.Instance.ClosePanel(GameConfig.PANEL_HOME);

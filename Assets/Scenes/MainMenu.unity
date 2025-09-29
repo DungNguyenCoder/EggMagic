@@ -1276,7 +1276,7 @@ GameObject:
   - component: {fileID: 1670043512}
   - component: {fileID: 1670043511}
   m_Layer: 5
-  m_Name: Image - Rankings
+  m_Name: Image - Leaderboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

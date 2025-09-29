@@ -15,7 +15,6 @@ public class MainMenu : Panel
     }
     private void OnDisable()
     {
-        Debug.Log("Destroy DOTween mainmenu");
         DOTween.Kill(gameTitle.transform);
         DOTween.Kill(playButton.transform);
     }
@@ -23,11 +22,14 @@ public class MainMenu : Panel
     {
         AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
         AudioManager.Instance.PlayMusicFromStart();
+        Time.timeScale = 1f;
         SceneManager.LoadScene("GamePlay");
     }
-    public void OnClickRankings()
+    public void OnClickLeaderboard()
     {
-        
+        PanelManager.Instance.OpenPanel(GameConfig.PANEL_LEADERBOARD);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
+        Time.timeScale = 0f;
     }
     public void OnClickShare()
     {

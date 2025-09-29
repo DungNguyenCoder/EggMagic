@@ -8,7 +8,6 @@ public class GameManager : Singleton<GameManager>
     private int _score;
     public int _highScore { get; private set; }
     private float _time = 10f;
-    private bool _isGameOver = false;
 
     private void Start()
     {
@@ -17,14 +16,13 @@ public class GameManager : Singleton<GameManager>
     }
     private void Update()
     {
-        if (_time >= 0 && !_isGameOver)
+        if (_time >= 0)
         {
             _time -= Time.deltaTime;
         }
         else if (_time <= 0)
         {
             PanelManager.Instance.OpenPanel(GameConfig.PANEL_GAME_OVER);
-            Time.timeScale = 0f;
         }
     }
 
@@ -47,6 +45,11 @@ public class GameManager : Singleton<GameManager>
             PlayerPrefs.Save();
         }
         EventManager.onUpdatePointUI?.Invoke(_score);
+        _time += 4f;
+        if (_time > 10f)
+        {
+            _time = 10f;
+        }
     }
 
     public void SetScore(int score)

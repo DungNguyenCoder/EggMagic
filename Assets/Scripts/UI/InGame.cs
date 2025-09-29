@@ -9,22 +9,23 @@ using UnityEngine.UI;
 
 public class InGame : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI highScoreText;
-    [SerializeField] private TextMeshProUGUI eggLevelText;
-    [SerializeField] private Image currentEggImage;
-    [SerializeField] private Image nextEggImage;
-    [SerializeField] private Image FillBar;
+    [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _highScoreText;
+    [SerializeField] private TextMeshProUGUI _eggLevelText;
+    [SerializeField] private Image _currentEggImage;
+    [SerializeField] private Image _nextEggImage;
+    [SerializeField] private Image _fillBar;
+    [SerializeField] private Image _sceneAnimation;
     private void Start()
     {
-        Time.timeScale = 1f;
+        StartCoroutine(NextSceneAnimation());
         GameManager.Instance.SetTime(10f);
-        highScoreText.text = "" + PlayerPrefs.GetInt(GameConfig.HIGH_SCORE_KEY, 0);
-        FillBar.fillAmount = 1f;
+        _highScoreText.text = "" + PlayerPrefs.GetInt(GameConfig.HIGH_SCORE_KEY, 0);
+        _fillBar.fillAmount = 1f;
     }
     private void Update()
     {
-        FillBar.fillAmount = GameManager.Instance.GetTime() / 10f;
+        _fillBar.fillAmount = GameManager.Instance.GetTime() / 10f;
     }
 
     private void OnEnable()
@@ -39,22 +40,38 @@ public class InGame : MonoBehaviour
         EventManager.onUpdateEggLvlUI -= UpdateEggLvl;
         EventManager.onUpdateEgg -= ShowEggPreview;
     }
+    private IEnumerator NextSceneAnimation()
+    {
+        Time.timeScale = 0f;
+        _sceneAnimation.fillAmount = 1f;
+        float duration = 0.5f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            _sceneAnimation.fillAmount = Mathf.Lerp(1f, 0f, elapsed / duration);
+            yield return null;
+        }
+        Time.timeScale = 1f;
+        _sceneAnimation.fillAmount = 0f;
+    }
 
     private void UpdatePoint(int _score)
     {
-        scoreText.text = "" + _score;
-        highScoreText.text = "" + PlayerPrefs.GetInt(GameConfig.HIGH_SCORE_KEY, 0);
+        _scoreText.text = "" + _score;
+        _highScoreText.text = "" + PlayerPrefs.GetInt(GameConfig.HIGH_SCORE_KEY, 0);
     }
 
     private void UpdateEggLvl(int lvl)
     {
-        eggLevelText.text = "" + lvl;
+        _eggLevelText.text = "" + lvl;
     }
 
     public void ShowEggPreview(EggData currentData, EggData nextData)
     {
-        currentEggImage.sprite = currentData.eggSprite;
-        nextEggImage.sprite = nextData.eggSprite;
+        _currentEggImage.sprite = currentData.eggSprite;
+        _nextEggImage.sprite = nextData.eggSprite;
     }
     public void OnClickHome()
     {

@@ -11,6 +11,7 @@ public class GameConfig
     public static string PANEL_HOW_TO = "Panel - HowTo";
     public static string PANEL_AUTHOR = "Panel - Author";
     public static string PANEL_GAME_OVER = "Panel - GameOver";
+    public static string PANEL_LEADERBOARD = "Panel - Leaderboard";
     public static string EGG_DATA_PATH = "Data/Eggs/";
     public static string PANEL_DATA_PATH = "Panel/";
     public static string HIGH_SCORE_KEY = "HighScore";

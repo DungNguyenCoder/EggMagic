@@ -7,11 +7,11 @@ public class PanelRestart : Panel
 {
     public void OnClickYesButton()
     {
+        Time.timeScale = 1f;
         AudioManager.Instance.PlaySFX(AudioManager.Instance.select);
         PanelManager.Instance.ClosePanel(GameConfig.PANEL_RESTART);
         GameManager.Instance.SetScore(0);
-        SceneManager.LoadScene("GamePlay");
-        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void OnClickNoButton()
     {
